@@ -208,7 +208,6 @@ function translate(cifra, original) {
             }
         },
         AlfabetoInvertido(origi, key) {
-            console.log("aaa");
             return ['text', original.split('').reverse().join('')]; //Inverte a lista
         },
         AlfabetoTransposto(origi, key) {
