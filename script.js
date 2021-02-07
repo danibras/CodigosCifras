@@ -152,6 +152,7 @@ var cifras_codigos = ["Código Braille (Falso)", "Data", "Alfabeto Invertido", "
 /**---------------TRANSLATER ZONE---------------**/
 
 var alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+var alphabetReversed =  ['z', 'y', 'x', 'w', 'v', 'u', 't', 's', 'r', 'q', 'p', 'o', 'n', 'm', 'l', 'k', 'j', 'i', 'h', 'g', 'f', 'e', 'd', 'c', 'b', 'a']
 var romanArabeAlphabet = ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'y', 'z'];
 var numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 var morse = ['.-', '-...', '-.-.', '-..', '.', '..-.', '--.', '....', '..', '.--.', '-.-', '.-..', '--', '-.', '---', '.--.', '--.-', '.-.', '...', '-', '..-', '...-', '.--', '-..-', '-.--', '--..'];
@@ -208,7 +209,15 @@ function translate(cifra, original) {
             }
         },
         AlfabetoInvertido(origi, key) {
-            return ['text', original.split('').reverse().join('')]; //Inverte a lista
+            let translated = '';
+            for (let i = 0; i < origi.length; i++) { //Percorre a lista de letras original
+                if (alphabet.includes(origi[i].toLowerCase())) {
+                    translated += alphabetReversed[alphabet.indexOf(origi[i])];
+                } else { //Coloca outro tipo de caracteres no traslated
+                    translated += origi[i];
+                }
+            }
+            return ['text', translated]; //Inverte a lista
         },
         AlfabetoTransposto(origi, key) {
             let translated = '';
@@ -229,7 +238,7 @@ function translate(cifra, original) {
         PassaumMelro(origi, key) {
             let translated = '';
             for (let i = 0; i < origi.length; i++) { //Percorre a lista de letras original
-                if (alphabet.includes(origi[i])) {
+                if (alphabet.includes(origi[i].toLowerCase())) {
                     translated += origi[i] + alphabet[Math.floor(Math.random() * alphabet.length)];
                 } else { //Coloca outro tipo de caracteres no traslated
                     translated += origi[i];
@@ -240,7 +249,7 @@ function translate(cifra, original) {
         PassamdoisMelros(origi, key) {
             let translated = '';
             for (let i = 0; i < origi.length; i++) { //Percorre a lista de letras original 
-                if (alphabet.includes(origi[i])) {
+                if (alphabet.includes(origi[i].toLowerCase())) {
                     translated += origi[i] + alphabet[Math.floor(Math.random() * alphabet.length)] + alphabet[Math.floor(Math.random() * alphabet.length)];
                 } else { //Coloca outro tipo de caracteres no traslated
                     translated += origi[i];
