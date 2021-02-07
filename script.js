@@ -341,6 +341,18 @@ function translate(cifra, original) {
         Chave3(origi, key){
             return ['text', tradutor['AlfabetoTransposto'](origi, 'd')[1]]; //Utiliza o alfabeto transposto a comecar na letra D
         },
+        CodigoChines1(origi, key){
+            let translated = [];
+            for (let i = 0; i < origi.length; i++) {
+                if (alphabet.includes(origi[i])) {
+                    translated.push(`<img src="codigo_chines1/${origi[i]}.svg" class="codedImage" >`)
+                }
+                else{
+                    translated.push(`<img src="codigo_chines1/blank.svg" class="codedImage" >`)
+                }
+            }
+            return['image', translated]
+        },
         Angular1(origi, key){
             let translated = [];
             for (let i = 0; i < origi.length; i++) {
@@ -369,7 +381,13 @@ function translate(cifra, original) {
     }
 
     let translated;
-    const tradutorFunction = tradutor[cifra.replace(/\s+|-/gi, '').replace(/á/gi, 'A').replace('+', '')];//Remove espacos, acentos e sinais
+    //Remove espacos, acentos e sinais
+    const tradutorFunction = tradutor[cifra.replace(/\s+|-/gi, '')
+        .replace(/á/gi, 'A')
+        .replace(/ó/gi, 'o')
+        .replace(/ê/gi, 'e')
+        .replace('+', '')
+        ];
 
     if (tradutorFunction) {
         translated = tradutorFunction(origi, key);
