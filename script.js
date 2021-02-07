@@ -338,6 +338,9 @@ function translate(cifra, original) {
         Caranguejo(origi, key) {
             return ['text', original.split('').reverse().join('')]; //Inverte a lista
         },
+        Chave3(origi, key){
+            return ['text', tradutor['AlfabetoTransposto'](origi, 'd')[1]]; //Utiliza o alfabeto transposto a comecar na letra D
+        },
         Angular1(origi, key){
             let translated = [];
             for (let i = 0; i < origi.length; i++) {
@@ -366,7 +369,8 @@ function translate(cifra, original) {
     }
 
     let translated;
-    const tradutorFunction = tradutor[cifra.replace(/\s+|-/gi, '').replace(/á/gi, 'A')];//Remove os espacos e os acentos
+    const tradutorFunction = tradutor[cifra.replace(/\s+|-/gi, '').replace(/á/gi, 'A').replace('+', '')];//Remove espacos, acentos e sinais
+
     if (tradutorFunction) {
         translated = tradutorFunction(origi, key);
         if (translated[0] == 'text'){
@@ -436,7 +440,7 @@ function translate(cifra, original) {
             case 'Frase 2':
                 // code block
                 break;
-            case 'Chave +3':
+            case 'Chave +3': DONE
                 // code block
                 break;
             case 'Código Chinês 1':
