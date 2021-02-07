@@ -376,8 +376,20 @@ function translate(cifra, original) {
                 }
             }
             return['image', translated]
-        }
-        
+        },
+        UltimaLetraFalsa(origi, key){
+            console.log(origi);
+            let translated = '';
+            for (let i = 0; i < origi.length; i++) { //Percorre a lista de letras original
+                if (origi[i] == ' ') {
+                    translated += alphabet[Math.floor(Math.random() * alphabet.length)] + ' '; //Adiciona uma letra random antes de cada espaco
+                } else { //Coloca outro tipo de caracteres no traslated
+                    translated += origi[i];
+                }
+            }
+            translated += alphabet[Math.floor(Math.random() * alphabet.length)] //Adiciona uma letra random ah ultima palavra
+            return ['text', translated]
+        },
     }
 
     let translated;
@@ -386,6 +398,7 @@ function translate(cifra, original) {
         .replace(/á/gi, 'A')
         .replace(/ó/gi, 'o')
         .replace(/ê/gi, 'e')
+        .replace(/ú/gi, 'U')
         .replace('+', '')
         ];
 
@@ -461,7 +474,7 @@ function translate(cifra, original) {
             case 'Chave +3': DONE
                 // code block
                 break;
-            case 'Código Chinês 1':
+            case 'Código Chinês 1': DONE
                 // code block
                 break;
             case 'Código Chinês 2':
@@ -473,7 +486,7 @@ function translate(cifra, original) {
             case 'Angular 2': DONE
                 // code block
                 break;
-            case 'Última Letra Falsa':
+            case 'Última Letra Falsa': DONE
                 // code block
                 break;
             case 'Homógrafo-Traços':
