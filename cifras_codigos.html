@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<!-- https://wireframe.cc/nb8Pb3
+
+    <div class="vl">
+
+<select id="cifras" >
+                <option value="" disabled selected hidden>Escolha a cifra/código</option>
+                <optgroup label="Codigos e Cifras"></optgroup>
+                <option value="brailleFalso">Código Braille (Falso)</option>
+                <option value="data">Data</option>
+                <option value="alfabetoInv">Alfabeto Invertido</option>
+                <option value="transposto">Transposto</option>
+                <option value="picosMorse">Picos de Morse</option>
+                <option value="1melro">Passa um Melro</option>
+                <option value="2melro">Passam dois Melros</option>
+                <option value="alfabetoNum">Alfabeto Numeral</option>
+                <option value="alfabetoNumChave">Alfabeto Numeral com chave</option>
+                <option value="romanoArabe">Romano-Árabe</option>
+                <option value="metades">Metades</option>
+                <option value="grelha">Grelha</option>
+                <option value="vogaisPontos">Vogais por Pontos</option>
+                <option value="caraguenjo">Caranguejo</option>
+                <option value="frase1">Frase 1</option>
+                <option value="frase2">Frase 2</option>
+                <option value="chave+3">Chave +3</option>
+                <option value="chines">Código Chinês 1</option>
+                <option value="chines2">Código Chinês 2</option>
+                <option value="angular1">Angular 1</option>
+                <option value="angular2">Angular 2</option>
+                <option value="ultimaLetraFalsa">Última Letra Falsa</option>
+                <option value="homografoTracos">Homógrafo-Traços</option>
+                <option value="nosMorse">Nós de Morse</option>
+                <option value="batalhaNavalChave">Batalha Naval com chave</option>
+                <option value="batalhaNaval">Batalha Naval sem chave</option>
+                <option value=""></option>
+            </select></div>
+-->
+<html>
+
+<head>
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3pro.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="script.js"></script>
+    <title>Cifras e Codigos</title>
+</head>
+
+<body>
+    <div id="topDiv" class="w3-container w3-theme-d2 w3-center">
+        <h2>Códigos e Cifras</h2>
+    </div>
+    <div class="w3-panel w3-round-xlarge w3-theme-d1 w3-center" id="textareasDiv">
+        <div class="autocomplete">
+            <input id="myInput" type="text" name="myCountry" autocomplete="off" placeholder="Cifra/código">
+            <i class="fa fa-search" id="search-icon"></i>
+        </div> 
+        <input id="key" type="text" placeholder="Chave" autocomplete="off" disabled>
+            <textarea id="originalText"></textarea>
+            <textarea placeholder="Texto codificado" id="codedText" readonly></textarea>
+            <div id="codedImagesDiv" hidden>
+                <span id='imagesSpan'>
+                    <!--<p class="codedTextImagified">p</p>-->
+                </span>
+            </div>
+    </div>
+</body>
+
+</html>
