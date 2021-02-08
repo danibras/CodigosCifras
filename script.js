@@ -63,6 +63,8 @@ function autocomplete(inp, arr) {
             function() {
                 let cifra = this.getElementsByTagName("input")[0].value;
                 let original = $("#originalText").val();
+                $("#key").prop("disabled", key_state);
+                $("#key").val("");
                 translate(cifra, original);
             },
             function() {
@@ -173,7 +175,7 @@ function translate(cifra, original) {
 
 
     const tradutor = {
-        Morse(origi, key) {
+        CodigoMorse(origi, key) {
             let translated = '';
             for (let i = 0; i < origi.length; i++) { //Percorre a lista de letras original
                 if (alphabet.includes(origi[i].toLowerCase())) { //Transforma letras
@@ -234,6 +236,12 @@ function translate(cifra, original) {
             } else {
                 return ['text', 'Introduza uma letra na chave'];
             }
+        },
+        PicosdeMorse(origi, key){
+            let translated = [];
+            translated.push(`<img src="picos_morse/high.svg" class="codedImage" >`)
+            translated.push(`<img src="picos_morse/low.svg" class="codedImage" >`)
+            return['image', translated]
         },
         PassaumMelro(origi, key) {
             let translated = '';
@@ -477,7 +485,7 @@ function translate(cifra, original) {
             case 'Código Chinês 1': DONE
                 // code block
                 break;
-            case 'Código Chinês 2':
+            case 'Código Chinês 2': DONE
                 // code block
                 break;
             case 'Angular 1': DONE
