@@ -15,51 +15,51 @@ $(document).ready(function() {
     });
 });
 
-function autocomplete(inp, arr) {
-    /*the autocomplete function takes two arguments,
-    the text field element and an array of possible autocompleted values:*/
-    var currentFocus;
-    /*execute a function when someone writes in the text field:*/
-    inp.addEventListener("input", function(e) {
-        var a, b, i, val = this.value;
-        /*close any already open lists of autocompleted values*/
-        closeAllLists();
-        if (!val) { return false; }
-        currentFocus = -1;
-        /*create a DIV element that will contain the items (values):*/
-        a = document.createElement("DIV");
-        $("#myInput").css("border-bottom-left-radius", "0px");
-        a.setAttribute("id", this.id + "autocomplete-list");
-        a.setAttribute("class", "autocomplete-items");
-        /*append the DIV element as a child of the autocomplete container:*/
-        this.parentNode.appendChild(a);
-        /*for each item in the array...*/
-        for (i = 0; i < arr.length; i++) {
-            /*check if the item starts with the same letters as the text field value:*/
-            if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
-                /*create a DIV element for each matching element:*/
-                b = document.createElement("DIV");
-                b.setAttribute("class", "autocomplete-items-individual");
-                /*make the matching letters bold:*/
-                b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
-                b.innerHTML += arr[i].substr(val.length);
-                /*insert a input field that will hold the current array item's value:*/
-                b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
-                /*execute a function when someone clicks on the item value (DIV element):*/
-                b.addEventListener("click", function(e) {
-                    /*insert the value for the autocomplete text field:*/
-                    inp.value = this.getElementsByTagName("input")[0].value;
-                    cifra_codigo_clicked = this.getElementsByTagName("input")[0].value;
-                    translate(cifra_codigo_clicked, $("#originalText").val());
-                    /*close the list of autocompleted values,
-                (or any other open lists of autocompleted values:*/
-                    closeAllLists();
-                });
-                a.appendChild(b);
-            }
+
+//AUTOCOMPLETE 
+function autocomplete(inp, cifras) {
+    
+    inp.addEventListener("input", function() {
+
+        $(".autocompleteItem").parent().remove()
+
+        var val = this.value
+
+        if (!val) { 
+            $("#myInput").css("border-bottom-left-radius", "10px")
+            return false; 
         }
-        /*Detects when the mouse hovers a autocomplete-items-individual element */
-        $(".autocomplete-items-individual").hover(
+
+        var sugestionsList = document.createElement("DIV");
+        sugestionsList.setAttribute("id", this.id + "autocompleteList");
+        sugestionsList.setAttribute("class", "autocompleteList");
+        this.parentNode.appendChild(sugestionsList);
+
+        cifras.forEach(element => {
+            $("#myInput").css("border-bottom-left-radius", "0px")
+            if (element.substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                var item = document.createElement("DIV");
+                item.setAttribute("class", "autocompleteItem");
+                item.innerHTML = "<strong>" + element.substr(0, val.length) + "</strong>";
+                item.innerHTML += element.substr(val.length);
+                item.innerHTML += "<input type='hidden' value='" + element + "'>";
+                sugestionsList.appendChild(item);
+            }
+        });
+
+        if ($(".autocompleteList").children().length == 0){
+            $("#myInput").css("border-bottom-left-radius", "10px")
+        }
+
+        $(".autocompleteItem").click(function(){
+            $("[name='mySearch']").val(this.getElementsByTagName("input")[0].value)
+            cifra_codigo_clicked = this.getElementsByTagName("input")[0].value;
+            translate(cifra_codigo_clicked, $("#originalText").val());
+            $(".autocompleteItem").parent().remove()
+            $("#myInput").css("border-bottom-left-radius", "10px")
+        });
+
+        $(".autocompleteItem").hover(
             function() {
                 let cifra = this.getElementsByTagName("input")[0].value;
                 let original = $("#originalText").val();
@@ -73,79 +73,15 @@ function autocomplete(inp, arr) {
                 translate(cifra_codigo_clicked, $("#originalText").val());
             }
         );
-    });
-    /*execute a function presses a key on the keyboard:*/
-    inp.addEventListener("keydown", function(e) {
-        var x = document.getElementById(this.id + "autocomplete-list");
-        if (x) x = x.getElementsByTagName("div");
-        if (e.keyCode == 40) {
-            /*If the arrow DOWN key is pressed,
-            increase the currentFocus variable:*/
-            currentFocus++;
-            /*and and make the current item more visible:*/
-            addActive(x);
-        } else if (e.keyCode == 38) { //up
-            /*If the arrow UP key is pressed,
-            decrease the currentFocus variable:*/
-            currentFocus--;
-            /*and and make the current item more visible:*/
-            addActive(x);
-        } else if (e.keyCode == 13) {
-            /*If the ENTER key is pressed, prevent the form from being submitted,*/
-            e.preventDefault();
-            if (currentFocus > -1) {
-                /*and simulate a click on the "active" item:*/
-                if (x) x[currentFocus].click();
-            }
-        }
-    });
-
-    function addActive(x) {
-        /*a function to classify an item as "active":*/
-        if (!x) return false;
-        /*start by removing the "active" class on all items:*/
-        removeActive(x);
-        if (currentFocus >= x.length) currentFocus = 0;
-        if (currentFocus < 0) currentFocus = (x.length - 1);
-        /*add class "autocomplete-active":*/
-        x[currentFocus].classList.add("autocomplete-active");
-    }
-
-    function removeActive(x) {
-        /*a function to remove the "active" class from all autocomplete items:*/
-        for (var i = 0; i < x.length; i++) {
-            x[i].classList.remove("autocomplete-active");
-        }
-    }
-
-    function closeAllLists(elmnt) {
-        /*close all autocomplete lists in the document,
-        except the one passed as an argument:*/
-        $("#myInput").css("border-bottom-left-radius", "10px")
-        var x = document.getElementsByClassName("autocomplete-items");
-
-        for (var i = 0; i < x.length; i++) {
-            if (elmnt != x[i] && elmnt != inp) {
-                x[i].parentNode.removeChild(x[i]);
-            }
-        }
-    }
-    /*execute a function when someone clicks in the document:*/
-    document.addEventListener("click", function(e) {
-        closeAllLists(e.target);
-    });
+    })
 }
 
 /*An array containing all the translations:*/
-var cifras_codigos = ["Código Braille (Falso)", "Data", "Alfabeto Invertido", "Alfabeto Transposto", "Picos de Morse",
+var cifras_codigos = ["Data", "Alfabeto Invertido", "Alfabeto Transposto",
     "Passa um Melro", "Passam dois Melros", "Alfabeto Numeral", "Alfabeto Numeral com Chave",
-    "Romano-Árabe", "Metades", "Grelha", "Vogais por Pontos", "Caranguejo", "Frase 1", "Frase 2",
-    "Chave +3", "Código Chinês 1", "Código Chinês 2", "Angular 1", "Angular 2", "Última Letra Falsa",
-    "Homógrafo-Traços", "Nós de Morse", "Batalha Naval com chave", "Batalha Naval", "Vertical",
-    "Horizontal", "Caracol", "Primeira Letra Falsa", "Palavra-Chave 1", "Palavra-Chave 2",
-    "Palavra-Chave 3", "Palavras seguidas", "Palavras divididas", "Código Braille", "Gráfico vertical",
-    "Gráfico horizontal", "Letras trocadas", "Encostar à esquerda", "Alfabeto Fonético Internacional",
-    "Código Morse", "Alfabeto Grego", "Morse"
+    "Romano-Árabe", "Metades", "Vogais por Pontos", "Caranguejo",
+    "Chave +3", "Código Chinês 1", "Angular 1", "Angular 2", "Última Letra Falsa",
+    "Primeira Letra Falsa", "Código Morse", "Morse"
 ];
 
 
@@ -236,12 +172,6 @@ function translate(cifra, original) {
             } else {
                 return ['text', 'Introduza uma letra na chave'];
             }
-        },
-        PicosdeMorse(origi, key){
-            let translated = [];
-            translated.push(`<img src="picos_morse/high.svg" class="codedImage" >`)
-            translated.push(`<img src="picos_morse/low.svg" class="codedImage" >`)
-            return['image', translated]
         },
         PassaumMelro(origi, key) {
             let translated = '';
@@ -353,10 +283,10 @@ function translate(cifra, original) {
             let translated = [];
             for (let i = 0; i < origi.length; i++) {
                 if (alphabet.includes(origi[i])) {
-                    translated.push(`<img src="codigo_chines1/${origi[i]}.svg" class="codedImage" >`)
+                    translated.push(`<img src="./codigo_chines1/${origi[i]}.svg" class="codedImage" >`)
                 }
                 else{
-                    translated.push(`<img src="codigo_chines1/blank.svg" class="codedImage" >`)
+                    translated.push(`<img src="./codigo_chines1/blank.svg" class="codedImage" >`)
                 }
             }
             return['image', translated]
@@ -365,10 +295,10 @@ function translate(cifra, original) {
             let translated = [];
             for (let i = 0; i < origi.length; i++) {
                 if (alphabet.includes(origi[i])) {
-                    translated.push(`<img src="angular1/${origi[i]}.svg" class="codedImage" >`)
+                    translated.push(`<img src="./angular1/${origi[i]}.svg" class="codedImage" >`)
                 }
                 else{
-                    translated.push(`<img src="angular1/blank.svg" class="codedImage" >`)
+                    translated.push(`<img src="./angular1/blank.svg" class="codedImage" >`)
                 }
             }
             return['image', translated]
@@ -377,10 +307,10 @@ function translate(cifra, original) {
             let translated = [];
             for (let i = 0; i < origi.length; i++) {
                 if (alphabet.includes(origi[i])) {
-                    translated.push(`<img src="angular2/${origi[i]}.svg" class="codedImage" >`)
+                    translated.push(`<img src="./angular2/${origi[i]}.svg" class="codedImage" >`)
                 }
                 else{
-                    translated.push(`<img src="angular2/blank.svg" class="codedImage" >`)
+                    translated.push(`<img src="./angular2/blank.svg" class="codedImage" >`)
                 }
             }
             return['image', translated]
